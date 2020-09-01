@@ -1,7 +1,9 @@
 package com.thefifthcontinent.sfgpetclinic.model;
 
-public class Person {
+public class Person extends BaseEntity {
 
+	private static final long serialVersionUID = 1L;
+	
 	private String givenName;
 	private String surname;
 	
