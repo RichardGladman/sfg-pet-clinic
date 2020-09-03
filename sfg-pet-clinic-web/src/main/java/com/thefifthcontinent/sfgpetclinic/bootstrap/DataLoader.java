@@ -8,8 +8,6 @@ import com.thefifthcontinent.sfgpetclinic.model.Owner;
 import com.thefifthcontinent.sfgpetclinic.model.Vet;
 import com.thefifthcontinent.sfgpetclinic.services.OwnerService;
 import com.thefifthcontinent.sfgpetclinic.services.VetService;
-import com.thefifthcontinent.sfgpetclinic.services.map.OwnerServiceMap;
-import com.thefifthcontinent.sfgpetclinic.services.map.VetServiceMap;
 
 @Component
 public class DataLoader implements CommandLineRunner {

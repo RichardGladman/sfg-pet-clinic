@@ -6,5 +6,15 @@
 	</head>
 	<body>
 		<h1 th:text="${'Pet Clinic - Owner Index Page'}">Pet Clinic - Owner Index Page</h1>
+		<table>
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+			</tr>
+			<tr th:each="owner : ${owners}">
+				<td th:text="${owner.id}">77</td>
+				<td th:text="${owner.surname} + ', ' + ${owner.givenName}">Owner name</td>
+			</tr>
+		</table>
 	</body>
 </html>
