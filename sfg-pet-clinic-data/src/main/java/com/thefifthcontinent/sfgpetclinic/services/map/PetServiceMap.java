@@ -3,9 +3,9 @@ package com.thefifthcontinent.sfgpetclinic.services.map;
 import java.util.Set;
 
 import com.thefifthcontinent.sfgpetclinic.model.Pet;
-import com.thefifthcontinent.sfgpetclinic.services.CrudService;
+import com.thefifthcontinent.sfgpetclinic.services.PetService;
 
-public class PetServiceMap extends AbstractMapService<Pet, Long> implements CrudService<Pet, Long>{
+public class PetServiceMap extends AbstractMapService<Pet, Long> implements PetService {
 
 	@Override
 	public Pet save(Pet object) {
