@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://thymeleaf.org">
+<html lang="en" xmlns:th="https://thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
 	<head>
 		<meta charset="UTF-8">
 		<title>Pet Clinic Owner Index</title>
 	</head>
 	<body>
-		<h1 th:text="${'Pet Clinic - Owner Index Page'}">Pet Clinic - Owner Index Page</h1>
-		<table>
+		<h2 th:text="${'Pet Clinic - Owner Index Page'}">Pet Clinic - Owner Index Page</h2>
+		<table class="table table-striped">
 			<tr>
-				<th>Id</th>
+				<th style="width: 120px;">Id</th>
 				<th>Name</th>
 			</tr>
 			<tr th:each="owner : ${owners}">
