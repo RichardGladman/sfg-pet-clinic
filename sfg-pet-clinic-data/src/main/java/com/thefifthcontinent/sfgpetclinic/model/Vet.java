@@ -1,5 +1,6 @@
 package com.thefifthcontinent.sfgpetclinic.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Vet extends Person {
@@ -18,5 +19,12 @@ public class Vet extends Person {
 		this.specialties = specialties;
 	}
 	
-
+	
+	public void addSpeciality(Speciality speciality) {
+		if (null == specialties) {
+			specialties = new HashSet<>();
+		}
+		
+		specialties.add(speciality);
+	}
 }

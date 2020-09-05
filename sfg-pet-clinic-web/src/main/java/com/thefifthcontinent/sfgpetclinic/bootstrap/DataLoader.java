@@ -5,28 +5,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.thefifthcontinent.sfgpetclinic.model.Owner;
 import com.thefifthcontinent.sfgpetclinic.model.Pet;
 import com.thefifthcontinent.sfgpetclinic.model.PetType;
+import com.thefifthcontinent.sfgpetclinic.model.Speciality;
 import com.thefifthcontinent.sfgpetclinic.model.Vet;
 import com.thefifthcontinent.sfgpetclinic.services.OwnerService;
 import com.thefifthcontinent.sfgpetclinic.services.PetTypeService;
+import com.thefifthcontinent.sfgpetclinic.services.SpecialityService;
 import com.thefifthcontinent.sfgpetclinic.services.VetService;
 
 @Component
 public class DataLoader implements CommandLineRunner {
 	
 	private final PetTypeService petTypeService;
+	private final SpecialityService specialityService;
 	private final OwnerService ownerService;
 	private final VetService vetService;
-	
+
+	@Value("${petclinic.loadFreshData:#{'false'}}")
+	boolean loadData;
+
 	
 	@Autowired
-	public DataLoader(OwnerService ownerService, VetService vetService, PetTypeService petTypeService) {
+	public DataLoader(
+			OwnerService ownerService, 
+			VetService vetService, 
+			PetTypeService petTypeService, 
+			SpecialityService specialityService
+		) {
 		this.petTypeService = petTypeService;
+		this.specialityService = specialityService;
 		this.ownerService = ownerService;
 		this.vetService = vetService;
 	}
@@ -35,16 +48,25 @@ public class DataLoader implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
+		if (!loadData) {
+			return;
+		}
+		
+		System.out.println("Creating new dataset...");
+				
 		Map<String, PetType> petTypes = createPetTypes();
+		Map<String, Speciality> specialitiesMap = createSpecialities();
 		createOwners(petTypes);
-		createVets();
+		createVets(specialitiesMap);
+		
+		System.out.println("\tCompleted.");
 		
 	}
 	
 	
 	private void createOwners(Map<String, PetType> petTypes) {
 		
-		System.out.println("Creating owners...");
+		System.out.println("\tCreating owners...");
 
 		Owner owner = new Owner(); 
 		owner.setGivenName("Buffy");
@@ -77,32 +99,31 @@ public class DataLoader implements CommandLineRunner {
 		owner.addPet(pet);
 		
 		ownerService.save(owner);
-		
-		System.out.println("Created owners.");
 	}
 	
 	
-	private void createVets() {
+	private void createVets(Map<String, Speciality> specialities) {
 		
-		System.out.println("Creating vets...");
+		System.out.println("\tCreating vets...");
 		
 		Vet vet = new Vet();
-		vet.setGivenName("John");
-		vet.setSurname("Doe");
+		vet.setGivenName("Jason");
+		vet.setSurname("Vorhees");
+		vet.addSpeciality(specialities.get("dentistry"));
+		vet.addSpeciality(specialities.get("surgery"));
 		vetService.save(vet);
 		
 		vet = new Vet();
 		vet.setGivenName("Freddie");
 		vet.setSurname("Kruger");
+		vet.addSpeciality(specialities.get("radiology"));
 		vetService.save(vet);
-		
-		System.out.println("Created vets.");
 	}
 	
 	
 	private Map<String, PetType> createPetTypes() {
 		
-		System.out.println("Creating pet types...");
+		System.out.println("\tCreating pet types...");
 	
 		Map<String, PetType> petTypes = new HashMap<>();
 		
@@ -122,9 +143,32 @@ public class DataLoader implements CommandLineRunner {
 		type.setName("Rabbit");
 		petTypes.put("rabbit", petTypeService.save(type));
 		
-		System.out.println("Created pet types.");
-		
 		return petTypes;
+	}
+	
+	private Map<String, Speciality> createSpecialities() {
+		
+		System.out.println("\tCreating Specialities...");
+		
+		Map<String, Speciality> specialities = new HashMap<>();
+		
+		Speciality speciality = new Speciality();
+		speciality.setDescription("Surgery");
+		specialities.put("surgery", specialityService.save(speciality));
+		
+		speciality = new Speciality();
+		speciality.setDescription("Diagnostics");
+		specialities.put("diagnostics", specialityService.save(speciality));
+		
+		speciality = new Speciality();
+		speciality.setDescription("Dentistry");
+		specialities.put("dentistry", specialityService.save(speciality));
+		
+		speciality = new Speciality();
+		speciality.setDescription("Radiology");
+		specialities.put("radiology", specialityService.save(speciality));
+		
+		return specialities;
 	}
 
 }
