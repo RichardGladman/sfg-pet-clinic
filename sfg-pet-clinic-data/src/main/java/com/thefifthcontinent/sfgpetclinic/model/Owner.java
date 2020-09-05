@@ -1,5 +1,6 @@
 package com.thefifthcontinent.sfgpetclinic.model;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class Owner extends Person {
@@ -50,6 +51,15 @@ public class Owner extends Person {
 	
 	public void setPets(Set<Pet> pets) {
 		this.pets = pets;
+	}
+	
+	
+	public void addPet(Pet pet) {
+		if (null == pets) {
+			pets = new HashSet<>();
+		}
+		
+		pets.add(pet);
 	}
 	
 

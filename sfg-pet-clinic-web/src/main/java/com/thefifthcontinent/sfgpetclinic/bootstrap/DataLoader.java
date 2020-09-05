@@ -1,13 +1,15 @@
 package com.thefifthcontinent.sfgpetclinic.bootstrap;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import com.thefifthcontinent.sfgpetclinic.model.Owner;
+import com.thefifthcontinent.sfgpetclinic.model.Pet;
 import com.thefifthcontinent.sfgpetclinic.model.PetType;
 import com.thefifthcontinent.sfgpetclinic.model.Vet;
 import com.thefifthcontinent.sfgpetclinic.services.OwnerService;
@@ -33,25 +35,47 @@ public class DataLoader implements CommandLineRunner {
 	@Override
 	public void run(String... args) throws Exception {
 		
-		Set<PetType> petTypes = createPetTypes();
-		createOwners();
+		Map<String, PetType> petTypes = createPetTypes();
+		createOwners(petTypes);
 		createVets();
 		
 	}
 	
 	
-	private void createOwners() {
+	private void createOwners(Map<String, PetType> petTypes) {
 		
 		System.out.println("Creating owners...");
 
 		Owner owner = new Owner(); 
 		owner.setGivenName("Buffy");
 		owner.setSurname("Summers");
+		owner.setAddress("1630 Revello Drive");
+		owner.setCity("Sunnydale");
+		owner.setPhoneNumber("(805) 555-8986");
+		
+		Pet pet = new Pet();
+		pet.setPetType(petTypes.get("cat"));
+		pet.setOwner(owner);
+		pet.setBirthDate(LocalDate.now());
+		pet.setName("Cally");
+		owner.addPet(pet);
+		
 		ownerService.save(owner);
 		
 		owner = new Owner();
 		owner.setGivenName("Willow");
 		owner.setSurname("Rosenberg");
+		owner.setAddress("Sunnydale U.");
+		owner.setCity("Sunnydale");
+		owner.setPhoneNumber("(805) 555-6789");
+		
+		pet = new Pet();
+		pet.setPetType(petTypes.get("dog"));
+		pet.setOwner(owner);
+		pet.setBirthDate(LocalDate.now());
+		pet.setName("Rover");
+		owner.addPet(pet);
+		
 		ownerService.save(owner);
 		
 		System.out.println("Created owners.");
@@ -76,27 +100,27 @@ public class DataLoader implements CommandLineRunner {
 	}
 	
 	
-	private Set<PetType> createPetTypes() {
+	private Map<String, PetType> createPetTypes() {
 		
 		System.out.println("Creating pet types...");
 	
-		Set<PetType> petTypes = new HashSet<>();
+		Map<String, PetType> petTypes = new HashMap<>();
 		
 		PetType type = new PetType();
 		type.setName("Cat");
-		petTypes.add(petTypeService.save(type));
+		petTypes.put("cat", petTypeService.save(type));
 		
 		type = new PetType();
 		type.setName("Dog");
-		petTypes.add(petTypeService.save(type));
+		petTypes.put("dog", petTypeService.save(type));
 		
 		type = new PetType();
 		type.setName("Bird");
-		petTypes.add(petTypeService.save(type));
+		petTypes.put("bird", petTypeService.save(type));
 		
 		type = new PetType();
 		type.setName("Rabbit");
-		petTypes.add(petTypeService.save(type));
+		petTypes.put("rabbit", petTypeService.save(type));
 		
 		System.out.println("Created pet types.");
 		
