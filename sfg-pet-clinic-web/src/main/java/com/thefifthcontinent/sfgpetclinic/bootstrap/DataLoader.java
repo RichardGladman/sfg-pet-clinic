@@ -1,6 +1,7 @@
 package com.thefifthcontinent.sfgpetclinic.bootstrap;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,10 +15,12 @@ import com.thefifthcontinent.sfgpetclinic.model.Pet;
 import com.thefifthcontinent.sfgpetclinic.model.PetType;
 import com.thefifthcontinent.sfgpetclinic.model.Speciality;
 import com.thefifthcontinent.sfgpetclinic.model.Vet;
+import com.thefifthcontinent.sfgpetclinic.model.Visit;
 import com.thefifthcontinent.sfgpetclinic.services.OwnerService;
 import com.thefifthcontinent.sfgpetclinic.services.PetTypeService;
 import com.thefifthcontinent.sfgpetclinic.services.SpecialityService;
 import com.thefifthcontinent.sfgpetclinic.services.VetService;
+import com.thefifthcontinent.sfgpetclinic.services.VisitService;
 
 @Component
 public class DataLoader implements CommandLineRunner {
@@ -26,6 +29,7 @@ public class DataLoader implements CommandLineRunner {
 	private final SpecialityService specialityService;
 	private final OwnerService ownerService;
 	private final VetService vetService;
+	private final VisitService visitService;
 
 	@Value("${petclinic.loadFreshData:#{'false'}}")
 	boolean loadData;
@@ -36,12 +40,14 @@ public class DataLoader implements CommandLineRunner {
 			OwnerService ownerService, 
 			VetService vetService, 
 			PetTypeService petTypeService, 
-			SpecialityService specialityService
+			SpecialityService specialityService,
+			VisitService visitService
 		) {
 		this.petTypeService = petTypeService;
 		this.specialityService = specialityService;
 		this.ownerService = ownerService;
 		this.vetService = vetService;
+		this.visitService = visitService;
 	}
 
 	
@@ -83,6 +89,12 @@ public class DataLoader implements CommandLineRunner {
 		owner.addPet(pet);
 		
 		ownerService.save(owner);
+		
+		Visit visit = new Visit();
+		visit.setPet(pet);
+		visit.setTime(LocalTime.now());
+		visit.setDescription("Annual checkup");
+		visitService.save(visit);
 		
 		owner = new Owner();
 		owner.setGivenName("Willow");
