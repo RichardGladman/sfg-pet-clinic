@@ -6,6 +6,6 @@ import com.thefifthcontinent.sfgpetclinic.model.Owner;
 
 public interface OwnerRepository extends CrudRepository<Owner, Long> {
 
-	Owner findByLastName(String surname);
+	Owner findBySurname(String surname);
 	
 }
