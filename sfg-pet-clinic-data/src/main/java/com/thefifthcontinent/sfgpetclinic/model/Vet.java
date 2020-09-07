@@ -3,10 +3,25 @@ package com.thefifthcontinent.sfgpetclinic.model;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Vets")
 public class Vet extends Person {
 
 	private static final long serialVersionUID = 1L;
 	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(
+			name = "vets_specialites", 
+			joinColumns = @JoinColumn(name = "vet_id"), 
+			inverseJoinColumns = @JoinColumn(name = "speciality_id"))
 	private Set<Speciality> specialties;
 
 	
