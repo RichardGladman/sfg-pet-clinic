@@ -6,11 +6,18 @@ import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinColumns;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Vets")
 public class Vet extends Person {
@@ -23,17 +30,13 @@ public class Vet extends Person {
 			joinColumns = @JoinColumn(name = "vet_id"), 
 			inverseJoinColumns = @JoinColumn(name = "speciality_id"))
 	private Set<Speciality> specialties;
-
 	
-	public Set<Speciality> getSpecialties() {
-		return specialties;
+	@Builder
+	public Vet(Long id, String givenName, String surname, Set<Speciality> specialities) {
+		super(id, givenName, surname);
+		this.specialties = specialities;
 	}
 
-	
-	public void setSpecialties(Set<Speciality> specialties) {
-		this.specialties = specialties;
-	}
-	
 	
 	public void addSpeciality(Speciality speciality) {
 		if (null == specialties) {

@@ -9,11 +9,28 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "Owners")
 public class Owner extends Person {
 
 	private static final long serialVersionUID = 1L;
+	
+	@Builder
+	public Owner(Long id, String givenName, String surname, String address, String city, String phoneNumber, Set<Pet>pets) {
+		super(id, givenName, surname);
+		this.address = address;
+		this.city = city;
+		this.phoneNumber = phoneNumber;
+		this.pets = pets;
+	}
 	
 	@Column(name = "address")
 	private String address;
@@ -26,46 +43,6 @@ public class Owner extends Person {
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
 	private Set<Pet> pets;
-
-	
-	public String getAddress() {
-		return address;
-	}
-
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-
-	public String getCity() {
-		return city;
-	}
-
-
-	public void setCity(String city) {
-		this.city = city;
-	}
-
-
-	public String getPhoneNumber() {
-		return phoneNumber;
-	}
-
-
-	public void setPhoneNumber(String phoneNumber) {
-		this.phoneNumber = phoneNumber;
-	}
-
-
-	public Set<Pet> getPets() {
-		return pets;
-	}
-
-	
-	public void setPets(Set<Pet> pets) {
-		this.pets = pets;
-	}
 	
 	
 	public void addPet(Pet pet) {
@@ -75,6 +52,5 @@ public class Owner extends Person {
 		
 		pets.add(pet);
 	}
-	
 
 }
