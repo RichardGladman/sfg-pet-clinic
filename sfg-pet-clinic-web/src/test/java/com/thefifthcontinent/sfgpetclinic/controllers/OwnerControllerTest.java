@@ -1,6 +1,6 @@
 package com.thefifthcontinent.sfgpetclinic.controllers;
 
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
@@ -61,7 +61,19 @@ public class OwnerControllerTest {
 		.andExpect(status().isOk())
 		.andExpect(view().name("not-implemented"));
 		
-		verifyZeroInteractions(service);
+		verifyNoInteractions(service);
+	}
+	
+	@Test
+	public void testShow() throws Exception {
+		
+		when(service.findById(anyLong())).thenReturn(Owner.builder().id(1L).build());
+		
+		mockMvc.perform(get("/owners/1"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("owners/ownerDetails"))
+				.andExpect(model().attribute("owner", hasProperty("id", is(1L))));
+				
 	}
 
 }
