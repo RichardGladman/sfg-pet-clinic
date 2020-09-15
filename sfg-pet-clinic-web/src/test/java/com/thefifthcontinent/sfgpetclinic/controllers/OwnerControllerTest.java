@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -45,23 +46,11 @@ public class OwnerControllerTest {
 	}
 
 	@Test
-	public void testListOwners() throws Exception {
-		when(service.findAll()).thenReturn(owners);
-		
-		mockMvc.perform(get("/owners"))
-				.andExpect(status().isOk())
-				.andExpect(view().name("owners/index"))
-				.andExpect(model().attribute("owners", hasSize(2)));
-		
-	}
-
-	@Test
-	public void testFindOwner() throws Exception {
+	public void testFindOwners() throws Exception {
 		mockMvc.perform(get("/owners/find"))
 		.andExpect(status().isOk())
-		.andExpect(view().name("not-implemented"));
-		
-		verifyNoInteractions(service);
+		.andExpect(view().name("owners/findOwners"))
+		.andExpect(model().attributeExists("owners"));
 	}
 	
 	@Test
@@ -75,5 +64,45 @@ public class OwnerControllerTest {
 				.andExpect(model().attribute("owner", hasProperty("id", is(1L))));
 				
 	}
+	
+	@Test
+	void testFindsMany() throws Exception {
+		
+		when(service.findAllBySurnameLike(anyString()))
+				.thenReturn(
+						Arrays.asList(Owner.builder().id(1L).build(), Owner.builder().id(2L).build())
+				);
+				
+		mockMvc.perform(get("/owners"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("owners/ownersList"))
+				.andExpect(model().attribute("selections", hasSize(2)));
+		
+	}
+	
+	@Test
+	void testFindsOne() throws Exception {
+		
+		when(service.findAllBySurnameLike(anyString())).thenReturn(Arrays.asList(Owner.builder().id(1L).build()));
+				
+		mockMvc.perform(get("/owners"))
+				.andExpect(status().is3xxRedirection())
+				.andExpect(view().name("redirect:/owners/1"));
+		
+	}
+	
+	@Test
+	void testDisplay() throws Exception {
+		
+		when(service.findById(anyLong())).thenReturn(Owner.builder().id(1L).build());
+				
+		mockMvc.perform(get("/owners/1"))
+				.andExpect(status().isOk())
+				.andExpect(view().name("owners/ownerDetails"))
+				.andExpect(model().attribute("owner", hasProperty("id", is(1L))));
+		
+	}
+	
+
 
 }

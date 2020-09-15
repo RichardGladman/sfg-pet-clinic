@@ -1,5 +1,7 @@
 package com.thefifthcontinent.sfgpetclinic.services.jpa;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -20,5 +22,13 @@ public class OwnerServiceJPA extends AbstractJPAService<Owner, OwnerRepository> 
 	public Owner findByName(String surname) {
 		return repository.findBySurname(surname);
 	}
+
+
+	@Override
+	public List<Owner> findAllBySurnameLike(String surname) {
+		return repository.findAllBySurnameLike(surname);
+	}
+	
+	
 
 }

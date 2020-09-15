@@ -1,6 +1,8 @@
 package com.thefifthcontinent.sfgpetclinic.services.map;
 
 
+import java.util.List;
+
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
@@ -73,6 +75,9 @@ public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements 
 //		return owner;
 	}
 	
-	
+	@Override
+	public List<Owner> findAllBySurnameLike(String surname) {
+		return null;
+	}
 
 }
