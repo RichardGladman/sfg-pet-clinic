@@ -25,8 +25,8 @@ public class OwnerServiceJPA extends AbstractJPAService<Owner, OwnerRepository> 
 
 
 	@Override
-	public List<Owner> findAllBySurnameLike(String surname) {
-		return repository.findAllBySurnameLike(surname);
+	public List<Owner> findBySurnameContainingIgnoreCase(String surname) {
+		return repository.findBySurnameContainingIgnoreCase(surname);
 	}
 	
 	

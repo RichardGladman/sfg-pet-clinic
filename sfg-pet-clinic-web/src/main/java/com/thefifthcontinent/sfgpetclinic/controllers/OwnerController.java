@@ -59,7 +59,7 @@ public class OwnerController {
 			owner.setSurname("");
 		}
 		
-		List<Owner> owners = ownerService.findAllBySurnameLike(owner.getSurname());
+		List<Owner> owners = ownerService.findBySurnameContainingIgnoreCase(owner.getSurname());
 		
 		if (owners.isEmpty()) {
 			result.rejectValue("Surname", "notFound", "not found");

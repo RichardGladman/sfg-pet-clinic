@@ -76,7 +76,7 @@ public class OwnerServiceMap extends AbstractMapService<Owner, Long> implements 
 	}
 	
 	@Override
-	public List<Owner> findAllBySurnameLike(String surname) {
+	public List<Owner> findBySurnameContainingIgnoreCase(String surname) {
 		return null;
 	}
 

@@ -68,7 +68,7 @@ public class OwnerControllerTest {
 	@Test
 	void testFindsMany() throws Exception {
 		
-		when(service.findAllBySurnameLike(anyString()))
+		when(service.findBySurnameContainingIgnoreCase(anyString()))
 				.thenReturn(
 						Arrays.asList(Owner.builder().id(1L).build(), Owner.builder().id(2L).build())
 				);
@@ -83,7 +83,7 @@ public class OwnerControllerTest {
 	@Test
 	void testFindsOne() throws Exception {
 		
-		when(service.findAllBySurnameLike(anyString())).thenReturn(Arrays.asList(Owner.builder().id(1L).build()));
+		when(service.findBySurnameContainingIgnoreCase(anyString())).thenReturn(Arrays.asList(Owner.builder().id(1L).build()));
 				
 		mockMvc.perform(get("/owners"))
 				.andExpect(status().is3xxRedirection())
