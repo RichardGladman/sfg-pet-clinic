@@ -1,6 +1,7 @@
 package com.thefifthcontinent.sfgpetclinic.model;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -50,9 +51,19 @@ public class Pet extends BaseEntity {
         this.owner = owner;
         this.birthDate = birthDate;
 
-        if (visits == null || visits.size() > 0) {
+        if (visits != null) {
             this.visits = visits;
         }
+    }
+
+    public void addVisit(Visit visit) {
+        if (null == visits) {
+            visits = new HashSet<>();
+        }
+
+        visit.setPet(this);
+        visits.add(visit);
+
     }
 
 }
