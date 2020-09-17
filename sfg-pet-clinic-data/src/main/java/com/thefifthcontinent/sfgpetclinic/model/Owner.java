@@ -27,7 +27,9 @@ public class Owner extends Person {
         this.address = address;
         this.city = city;
         this.phoneNumber = phoneNumber;
-        this.pets = pets;
+        if (pets != null) {
+            this.pets = pets;
+        }
     }
 
     @Column(name = "address")
@@ -47,7 +49,20 @@ public class Owner extends Person {
             pets = new HashSet<>();
         }
 
+        pet.setOwner(this);
         pets.add(pet);
+    }
+    
+    public Pet getPet(String name, boolean ignoreNew) {
+        for (Pet pet : pets) {
+            if (!ignoreNew || !pet.isNew()) {
+                if (pet.getName().equalsIgnoreCase(name)) {
+                    return pet;
+                }
+            }
+        }
+        
+        return null;
     }
 
 }
