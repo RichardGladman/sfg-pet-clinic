@@ -9,6 +9,8 @@ import com.thefifthcontinent.sfgpetclinic.model.Pet;
 import com.thefifthcontinent.sfgpetclinic.model.Visit;
 import com.thefifthcontinent.sfgpetclinic.services.PetService;
 import com.thefifthcontinent.sfgpetclinic.services.VisitService;
+import java.beans.PropertyEditorSupport;
+import java.time.LocalTime;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -35,6 +37,13 @@ public class VisitController {
     @InitBinder
     public void setAllowedFields(WebDataBinder binder) {
         binder .setDisallowedFields("id");
+        
+        binder.registerCustomEditor(LocalTime.class, new PropertyEditorSupport() {
+            @Override
+            public void setAsText(String text) throws IllegalArgumentException {
+                setValue(LocalTime.parse(text));
+            }
+        });
     }
     
     @ModelAttribute("visit")
