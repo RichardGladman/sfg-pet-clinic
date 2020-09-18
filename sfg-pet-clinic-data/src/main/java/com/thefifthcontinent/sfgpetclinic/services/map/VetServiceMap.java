@@ -1,12 +1,11 @@
 package com.thefifthcontinent.sfgpetclinic.services.map;
 
 
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Service;
-
 import com.thefifthcontinent.sfgpetclinic.model.Vet;
 import com.thefifthcontinent.sfgpetclinic.services.SpecialityService;
 import com.thefifthcontinent.sfgpetclinic.services.VetService;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Service;
 
 @Service
 @Profile({"default", "map"})
@@ -29,7 +28,7 @@ public class VetServiceMap extends AbstractMapService<Vet, Long> implements VetS
 			return null;
 		}
 		
-		object.getSpecialties().forEach(speciality -> {
+		object.getSpecialities().forEach(speciality -> {
 			if (null == speciality.getId()) {
 				speciality.setId(specialityService.save(speciality).getId());
 			}
